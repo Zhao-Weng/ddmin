@@ -37,7 +37,7 @@ def ddmin(data, f, granularity):
                     granularity = 2
                     raise BreakoutException('continue while loop')
             for i in range(len(subsets)):
-                complement = makeComplement(subsets, i, data)
+                complement = makeComplement(subsets, i)
                 print("Testing Complement")
                 print(complement)
                 if (f(complement) == Result.Fail):
@@ -70,10 +70,18 @@ def makeSubsets(s, n):
 
 
 
-def makeComplement(subsets, n, data):
-    s = subsets[n]
-    r = re.sub(s, '', data)
-    return r
+def makeComplement(subsets, n):
+    b = []
+    for i in range(len(subsets)):
+        s = subsets[i]
+        if (i == n):
+            continue
+        b.append(s)
+    # print('b is:{0}\n'.format(b))
+    return "".join(b)
+    #s = subsets[n]
+    #r = re.sub(s, '', data)
+    #return r
     #s = list(subsets[n])
     #l = len(data)
     #i = 0
