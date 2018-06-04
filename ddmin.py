@@ -14,7 +14,8 @@ class BreakoutException(Exception):
 
 
 def Minimize(data, f):
-    if (f([]) == Result.Fail):
+    if (f('') == Result.Fail):
+        print("Here")
         return []
     if (f(data) == Result.Pass):
         raise ValueError('ddmin: function must fail on data')
@@ -36,6 +37,7 @@ def ddmin(data, f, granularity):
                     raise BreakoutException('continue while loop')
             for i in range(len(subsets)):
                 complement = makeComplement(subsets, i, data)
+                print("complement = \n" + complement)
                 if (f(complement) == Result.Fail):
                     granularity -= 1
                     if (granularity < 2):
@@ -88,7 +90,7 @@ def makeComplement(subsets, n, data):
 
 
 def f(d):
-    executetest(d)
+    a = executetest(d)
     #seen1, seen2, seen3 = False, False, False
     #for v in d:
         #if (v == 1):
@@ -101,7 +103,7 @@ def f(d):
         #return Result.Fail
     #else:
         #return Result.Pass
-
+    return a
 
 #??????????
 def ExampleMinimize():
@@ -109,7 +111,7 @@ def ExampleMinimize():
 
     #data = [1, 2, 3, 4, 5, 6, 7, 8]
     m = Minimize(code, f)
-    #print(m)
+    print(m)
 
 
 def handleInput():
@@ -136,6 +138,8 @@ def executetest(code):
     try:
         exec(code)
     except Exception:
+        print("Err Detected")
+        #print(code)
         return Result.Fail
 
     return Result.Pass
