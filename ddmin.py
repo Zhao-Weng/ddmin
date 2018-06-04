@@ -1,5 +1,5 @@
 import sys
-import subprocess
+import re
 
 
 class Result:
@@ -30,14 +30,16 @@ def ddmin(data, f, granularity):
             subsets = makeSubsets(data, granularity)
             # pdb.set_trace()
             for subset in subsets:
-                #print(subset)
+                print("Testing Subsets")
+                print(subset)
                 if (f(subset) == Result.Fail):
                     data = subset
                     granularity = 2
                     raise BreakoutException('continue while loop')
             for i in range(len(subsets)):
                 complement = makeComplement(subsets, i, data)
-                print("complement = \n" + complement)
+                print("Testing Complement")
+                print(complement)
                 if (f(complement) == Result.Fail):
                     granularity -= 1
                     if (granularity < 2):
@@ -67,26 +69,30 @@ def makeSubsets(s, n):
     return ret
 
 
-def makeComplement(subsets, n, data):
-    s = list(subsets[n])
-    l = len(data)
-    i = 0
-    j = 0
-    re = []
-    while(j < l):
-        #print(i)
-        if i == len(s):
-            re.append(data[j])
-            j += 1
-            continue
-        if (s[i] != data[j]):
-            re.append(data[j])
-            j += 1
-        else:
-            j += 1
-            i += 1
 
-    return "".join(re)
+def makeComplement(subsets, n, data):
+    s = subsets[n]
+    r = re.sub(s, '', data)
+    return r
+    #s = list(subsets[n])
+    #l = len(data)
+    #i = 0
+    #j = 0
+    #re = []
+    #while(j < l):
+        #print(i)
+        #if i == len(s):
+            #re.append(data[j])
+            #j += 1
+            #continue
+        #if (s[i] != data[j]):
+            #re.append(data[j])
+            #j += 1
+        #else:
+            #j += 1
+            #i += 1
+
+    #return "".join(re)
 
 
 def f(d):
@@ -136,11 +142,18 @@ def executetest(code):
     # result = subprocess.run(["python", filename, "t.py"], stderr=subprocess.PIPE)
     # print(result.stdout.decode('utf-8'))
     try:
-        exec(code)
-    except Exception:
-        print("Err Detected")
         #print(code)
+        exec(code)
+    except SyntaxError as e1:
+        print("Syntax Err Detected. Ignored")
+        #print(e1)
+        return Result.Unresolved
+    except ZeroDivisionError as e2:
         return Result.Fail
+    except NameError as e3:
+        print("Name Err Detected. Ignored")
+        # print(e3)
+        return Result.Unresolved
 
     return Result.Pass
 
