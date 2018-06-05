@@ -13,34 +13,33 @@ class BreakoutException(Exception):
         self.message = message
 
 
-def Minimize(data, f):
-    if (f('') == Result.Fail):
+def findMin(data):
+    if (executeTest('') == Result.Fail):
         print("Here")
         return []
-    if (f(data) == Result.Pass):
-        raise ValueError('ddmin: function must fail on data')
-    return ddmin(data, f, 2)
+    if (executeTest(data) == Result.Pass):
+        raise ValueError('function must fail')
+    return ddmin(data, 2)
 
 
-def ddmin(data, f, granularity):
+def ddmin(data, granularity):
     #whole = data
     #length = len(data)
     while (len(data) >= 2):
         try:
-            subsets = makeSubsets(data, granularity)
-            # pdb.set_trace()
+            subsets = findSubsets(data, granularity)
             for subset in subsets:
                 print("Testing Subsets")
                 print(subset)
-                if (f(subset) == Result.Fail):
+                if (executeTest(subset) == Result.Fail):
                     data = subset
                     granularity = 2
                     raise BreakoutException('continue while loop')
             for i in range(len(subsets)):
-                complement = makeComplement(subsets, i)
+                complement = findComplement(subsets, i)
                 print("Testing Complement")
                 print(complement)
-                if (f(complement) == Result.Fail):
+                if (executeTest(complement) == Result.Fail):
                     granularity -= 1
                     if (granularity < 2):
                         granularity = 2
@@ -58,19 +57,18 @@ def ddmin(data, f, granularity):
     return data
 
 
-def makeSubsets(s, n):
+def findSubsets(set, n):
     ret = []
     while(n > 0):
-        i = len(s) // n
-        copyS = s
-        s = copyS[i:]
-        ret.append("".join(copyS[:i]))
+        i = len(set) // n
+        copy = set
+        set = copy[i:]
+        ret.append("".join(copy[:i]))
         n -= 1
     return ret
 
 
-
-def makeComplement(subsets, n):
+def findComplement(subsets, n):
     b = []
     for i in range(len(subsets)):
         s = subsets[i]
@@ -102,29 +100,11 @@ def makeComplement(subsets, n):
 
     #return "".join(re)
 
-
-def f(d):
-    a = executetest(d)
-    #seen1, seen2, seen3 = False, False, False
-    #for v in d:
-        #if (v == 1):
-            #seen1 = True
-        #if (v == 7):
-            #seen2 = True
-       # if (v == 8):
-            #seen3 = True
-    #if (seen1 and seen2 and seen3):
-        #return Result.Fail
-    #else:
-        #return Result.Pass
-    return a
-
 #??????????
-def ExampleMinimize():
+def startDdmin():
     code = "".join(handleInput())
 
-    #data = [1, 2, 3, 4, 5, 6, 7, 8]
-    m = Minimize(code, f)
+    m = findMin(code)
     print(m)
 
 
@@ -144,7 +124,7 @@ def handleInput():
         f.close()
     return sub
 
-def executetest(code):
+def executeTest(code):
     # arguments = "t.py".encode('utf-8')
     # filename = "handleInput.py"
     # result = subprocess.run(["python", filename, "t.py"], stderr=subprocess.PIPE)
@@ -157,16 +137,21 @@ def executetest(code):
         #print(e1)
         return Result.Unresolved
     except ZeroDivisionError as e2:
+        print("Div zero Detected. Catch")
         return Result.Fail
     except NameError as e3:
         print("Name Err Detected. Ignored")
         # print(e3)
         return Result.Unresolved
-
+    except ModuleNotFoundError as e4:
+        print("ModuleNotFound Err Detected. Ignored")
+        # print(e4)
+        return Result.Unresolved
+    print("Pass")
     return Result.Pass
 
 
 if __name__ == '__main__':
-    ExampleMinimize()
+    startDdmin()
 
 
