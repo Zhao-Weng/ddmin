@@ -17,9 +17,17 @@ def findMin(data):
     if (executeTest('') == Result.Fail):
         print("Here")
         return []
-    if (executeTest(data) == Result.Pass):
-        raise ValueError('function must fail')
-    return ddmin(data, 2)
+    try:
+        exec(data)
+    except:
+        ex = sys.exc_info()[0]
+        #eturn ddmin(data, 2, e)
+        if (ex is ArithmeticError) or (ex is OverflowError) or (ex is FloatingPointError) or (ex is ZeroDivisionError) or (ex is AssertionError) or (ex is AttributeError) or (ex is IndexError) or (ex is TypeError) or (ex is ValueError) or (ex is KeyError):
+            setGlobal(ex)
+            return ddmin(data, 2)
+        else:
+            raise ValueError('Unsupported Err.')
+    raise ValueError('function must fail')
 
 
 def ddmin(data, granularity):
@@ -136,8 +144,8 @@ def executeTest(code):
         print("Syntax Err Detected. Ignored")
         #print(e1)
         return Result.Unresolved
-    except ZeroDivisionError as e2:
-        print("Div zero Detected. Catch")
+    except e as e2:
+        print("Designated Err Detected. Catch")
         return Result.Fail
     except NameError as e3:
         print("Name Err Detected. Ignored")
@@ -150,6 +158,10 @@ def executeTest(code):
     print("Pass")
     return Result.Pass
 
+def setGlobal(ex):
+    global e
+    e = ex
+    print("Catching "+ str(ex))
 
 if __name__ == '__main__':
     startDdmin()
