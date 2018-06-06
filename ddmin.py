@@ -1,5 +1,8 @@
 import sys
 import re
+from argparse import ArgumentParser
+from optparse import OptionParser
+import os
 
 
 class Result:
@@ -111,7 +114,34 @@ def findComplement(subsets, n):
 #??????????
 def startDdmin():
     code = "".join(handleInput())
+    m = findMin(code)
+    print(m)
 
+def startDdmin_r(args):
+    file_path = args[0]
+    # create a new file
+    f_tmp = open("tmp.py","w")
+    f_file = open(file_path, "r")
+
+    file_path_array = file_path.split("/")
+    file_path_pre = "/".join(file_path_array[0:-1])
+
+    for line in f_file:
+      keywords = line.split(" ")
+      if keywords[0] == "import":
+        # read the code, whether there is import, copy into new file
+        library_path = file_path_pre + "/" + keywords[1][0:-1] + ".py"
+        f_tmp.write(open(library_path, "r").read())
+      else:
+        f_tmp.write(line)
+
+    f_tmp.close()
+    
+    with open('tmp.py', 'r') as myfile:
+      code = myfile.read()
+      # print code
+
+    os.remove("tmp.py") 
     m = findMin(code)
     print(m)
 
@@ -175,7 +205,24 @@ def setGlobal(ex):
     e = ex
     print("Catching "+ str(ex))
 
+
+
+
 if __name__ == '__main__':
+  parser = OptionParser()
+  parser.add_option("-r", action="store_true", dest="recursive")
+
+  (options, args) = parser.parse_args()
+
+  
+  # print options
+  if args == []:
+    print "Usage: python ddmin.py [-r] filepath"
+    exit()
+
+  if options.recursive:
+    startDdmin_r(args)
+  else:
     startDdmin()
 
 
