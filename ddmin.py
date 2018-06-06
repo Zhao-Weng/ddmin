@@ -22,7 +22,7 @@ def findMin(data):
     except:
         ex = sys.exc_info()[0]
         #eturn ddmin(data, 2, e)
-        if (ex is ArithmeticError) or (ex is OverflowError) or (ex is FloatingPointError) or (ex is ZeroDivisionError) or (ex is AssertionError) or (ex is AttributeError) or (ex is IndexError) or (ex is KeyError):
+        if (ex is StopIteration) or (ex is OverflowError) or (ex is FloatingPointError) or (ex is ZeroDivisionError) or (ex is AssertionError) or (ex is AttributeError) or (ex is IndexError) or (ex is KeyError) or (ex is UnboundLocalError):
             setGlobal(ex)
             return ddmin(data, 2)
         else:
