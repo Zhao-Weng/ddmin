@@ -22,7 +22,7 @@ def findMin(data):
     except:
         ex = sys.exc_info()[0]
         #eturn ddmin(data, 2, e)
-        if (ex is ArithmeticError) or (ex is OverflowError) or (ex is FloatingPointError) or (ex is ZeroDivisionError) or (ex is AssertionError) or (ex is AttributeError) or (ex is IndexError) or (ex is TypeError) or (ex is ValueError) or (ex is KeyError):
+        if (ex is ArithmeticError) or (ex is OverflowError) or (ex is FloatingPointError) or (ex is ZeroDivisionError) or (ex is AssertionError) or (ex is AttributeError) or (ex is IndexError) or (ex is KeyError):
             setGlobal(ex)
             return ddmin(data, 2)
         else:
@@ -154,6 +154,10 @@ def executeTest(code):
     except ModuleNotFoundError as e4:
         print("ModuleNotFound Err Detected. Ignored")
         # print(e4)
+        return Result.Unresolved
+    except TypeError as e5:
+        print("Type Err Detected. Ignored")
+        #print(e5)
         return Result.Unresolved
     print("Pass")
     return Result.Pass
