@@ -20,6 +20,8 @@ def Minimize(data, f):
 	return ddmin(data, f, 2)
 
 
+
+
 def ddmin(data, f, granularity):
 	while (len(data) >= 2):
 		try:
@@ -52,7 +54,12 @@ def ddmin(data, f, granularity):
 			pass
 	return data
 
+'''
+Given the number of pieces to cut into and the origianl set, 
+MakeSubsets will output an array of subset with each subset's size equal to 
+lowerbound of length of the orignal set divided by number of pieces. 
 
+'''
 def makeSubsets(s, n):
 	ret = []
 	while(n > 0):
@@ -64,7 +71,11 @@ def makeSubsets(s, n):
 	# print('ret is:{0}\n'.format(ret))
 	return ret
 
+'''
+Given the number of pieces to cut into, array of subsets, and specific index of the subsets array which should be skipped, 
+makeComplement will output the complement subset with the specified subset left out from the original subsets.
 
+'''
 def makeComplement(subsets, n, b):
 	for i in range(len(subsets)):
 		s = subsets[i]
@@ -95,8 +106,23 @@ def ExampleMinimize():
 	m = Minimize(data, f)
 	print(m)
 
+from abc import ABC, abstractmethod
+ 
+class AbstractClassExample(ABC):
+ 
+    def __init__(self, value):
+        self.value = value
+        super().__init__()
+    
+    @abstractmethod
+    def do_something(self):
+        pass
+
+class DoAdd42(AbstractClassExample):
+    pass
 
 if __name__ == '__main__':
-	ExampleMinimize()
+	# ExampleMinimize()
+	x = DoAdd42(4)
 
 
