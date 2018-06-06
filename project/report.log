@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.18 (MiKTeX 2.9.6600 64-bit) (preloaded format=pdflatex 2018.2.18)  25 MAY 2018 23:56
+This is pdfTeX, Version 3.14159265-2.6-1.40.18 (MiKTeX 2.9.6600 64-bit) (preloaded format=pdflatex 2018.2.18)  6 JUN 2018 03:30
 entering extended mode
 **./report.tex
 (report.tex
@@ -735,21 +735,24 @@ Package: ifxetex 2010/09/12 v0.6 Provides ifxetex conditional
 \Gm@layoutvoffset=\dimen169
 \Gm@dimlist=\toks36
 
-("D:\Software\MiKTeX 2.9\tex\latex\geometry\geometry.cfg")) (report.aux)
+("D:\Software\MiKTeX 2.9\tex\latex\geometry\geometry.cfg"))
+("D:\Software\MiKTeX 2.9\tex\latex\tools\xspace.sty"
+Package: xspace 2014/10/28 v1.13 Space after command names (DPC,MH)
+) (report.aux)
 \openout1 = `report.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 15.
-LaTeX Font Info:    ... okay on input line 15.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 15.
-LaTeX Font Info:    ... okay on input line 15.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 15.
-LaTeX Font Info:    ... okay on input line 15.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 15.
-LaTeX Font Info:    ... okay on input line 15.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 15.
-LaTeX Font Info:    ... okay on input line 15.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 15.
-LaTeX Font Info:    ... okay on input line 15.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 19.
+LaTeX Font Info:    ... okay on input line 19.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 19.
+LaTeX Font Info:    ... okay on input line 19.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 19.
+LaTeX Font Info:    ... okay on input line 19.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 19.
+LaTeX Font Info:    ... okay on input line 19.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 19.
+LaTeX Font Info:    ... okay on input line 19.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 19.
+LaTeX Font Info:    ... okay on input line 19.
 
 ("D:\Software\MiKTeX 2.9\tex\context\base\supp-pdf.mkii"
 [Loading MPS to PDF converter (version 2006.09.02).]
@@ -850,44 +853,39 @@ ABD: EveryShipout initializing macros
 [1
 
 {C:/Users/tanzw/AppData/Local/MiKTeX/2.9/pdftex/config/pdftex.map}]
-LaTeX Font Info:    Try loading font information for OMS+cmr on input line 45.
+Overfull \hbox (10.34001pt too wide) in paragraph at lines 64--67
+\OT1/cmr/bx/n/12 Unsupported Ex-cep-tion Type. \OT1/cmr/m/n/12 Syn-tax-Er-ror, 
+NameEr-ror, Type-Er-ror, Mod-u-leNot-FoundEr-
+ []
 
+LaTeX Font Info:    Try loading font information for OMS+cmr on input line 71.
 ("D:\Software\MiKTeX 2.9\tex\latex\base\omscmr.fd"
 File: omscmr.fd 2014/09/29 v2.5h Standard LaTeX font definitions
 )
 LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <12> not available
-(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 45.
- [2]
-Underfull \hbox (badness 10000) in paragraph at lines 120--122
-
- []
-
-[3] [4]
-Underfull \hbox (badness 10000) in paragraph at lines 166--168
-
- []
-
-[5] [6] [7] (report.bbl) [8] (report.aux) ) 
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 71.
+ [2] (report.bbl) [3]
+(report.aux) ) 
 Here is how much of TeX's memory you used:
- 13284 strings out of 493303
- 257174 string characters out of 3141016
- 304246 words of memory out of 3000000
- 16563 multiletter control sequences out of 15000+200000
- 11189 words of font info for 40 fonts, out of 3000000 for 9000
+ 13289 strings out of 493303
+ 257386 string characters out of 3141016
+ 304556 words of memory out of 3000000
+ 16570 multiletter control sequences out of 15000+200000
+ 8732 words of font info for 31 fonts, out of 3000000 for 9000
  1141 hyphenation exceptions out of 8191
- 62i,6n,68p,793b,234s stack positions out of 5000i,500n,10000p,200000b,50000s
-<D:/Software/MiKTeX 2.9/fonts/type1/
-public/amsfonts/cm/cmbx10.pfb><D:/Software/MiKTeX 2.9/fonts/type1/public/amsfon
-ts/cm/cmbx12.pfb><D:/Software/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmcsc10
-.pfb><D:/Software/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmmi12.pfb><D:/Soft
-ware/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr10.pfb><D:/Software/MiKTeX 2.
-9/fonts/type1/public/amsfonts/cm/cmr12.pfb><D:/Software/MiKTeX 2.9/fonts/type1/
-public/amsfonts/cm/cmr17.pfb><D:/Software/MiKTeX 2.9/fonts/type1/public/amsfont
-s/cm/cmsy10.pfb><D:/Software/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmti12.p
-fb>
-Output written on report.pdf (8 pages, 142996 bytes).
+ 62i,6n,68p,697b,187s stack positions out of 5000i,500n,10000p,200000b,50000s
+<D:/Software/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmbx10.pfb
+><D:/Software/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmbx12.pfb><D:/Software
+/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmbxti10.pfb><D:/Software/MiKTeX 2.9
+/fonts/type1/public/amsfonts/cm/cmcsc10.pfb><D:/Software/MiKTeX 2.9/fonts/type1
+/public/amsfonts/cm/cmr10.pfb><D:/Software/MiKTeX 2.9/fonts/type1/public/amsfon
+ts/cm/cmr12.pfb><D:/Software/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr17.pf
+b><D:/Software/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmsy10.pfb><D:/Softwar
+e/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmti10.pfb><D:/Software/MiKTeX 2.9/
+fonts/type1/public/amsfonts/cm/cmti12.pfb>
+Output written on report.pdf (3 pages, 128284 bytes).
 PDF statistics:
- 68 PDF objects out of 1000 (max. 8388607)
+ 55 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)
  13 words of extra memory for PDF output out of 10000 (max. 10000000)
 
