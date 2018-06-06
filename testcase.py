@@ -13,8 +13,6 @@ class AbstractClassExample(ABC):
 class DoAdd42(AbstractClassExample):
     pass
 
-
-
 # x = DoAdd42(4)   # type error 
 
 
