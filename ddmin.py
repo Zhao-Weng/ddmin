@@ -115,7 +115,6 @@ def startDdmin():
     m = findMin(code)
     print(m)
 
-
 def handleInput():
     filename = sys.argv[1]
     if filename is not None:
@@ -158,6 +157,10 @@ def executeTest(code):
     except TypeError as e5:
         print("Type Err Detected. Ignored")
         #print(e5)
+        return Result.Unresolved
+    except ImportError as e6:
+        print("Import Err Detected. Ignored")
+        #print(e6)
         return Result.Unresolved
     print("Pass")
     return Result.Pass
