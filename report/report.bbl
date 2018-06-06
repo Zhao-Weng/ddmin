@@ -1,0 +1,31 @@
+\begin{thebibliography}{1}
+
+\bibitem{bjesse1998lava}
+{\sc Bjesse, P., Claessen, K., Sheeran, M., and Singh, S.}
+\newblock Lava: hardware design in haskell.
+\newblock In {\em ACM SIGPLAN Notices\/} (1998), vol.~34, ACM, pp.~174--184.
+
+\bibitem{claessen2011quickcheck}
+{\sc Claessen, K., and Hughes, J.}
+\newblock Quickcheck: a lightweight tool for random testing of haskell
+  programs.
+\newblock {\em Acm sigplan notices 46}, 4 (2011), 53--64.
+
+\bibitem{khurshid2003generalized}
+{\sc Khurshid, S., P{\u{a}}s{\u{a}}reanu, C.~S., and Visser, W.}
+\newblock Generalized symbolic execution for model checking and testing.
+\newblock In {\em International Conference on Tools and Algorithms for the
+  Construction and Analysis of Systems\/} (2003), Springer, pp.~553--568.
+
+\bibitem{pacheco2007feedback}
+{\sc Pacheco, C., Lahiri, S.~K., Ernst, M.~D., and Ball, T.}
+\newblock Feedback-directed random test generation.
+\newblock In {\em Proceedings of the 29th international conference on Software
+  Engineering\/} (2007), IEEE Computer Society, pp.~75--84.
+
+\bibitem{visser2004test}
+{\sc Visser, W., Pasareanu, C.~S., and Khurshid, S.}
+\newblock Test input generation with java pathfinder.
+\newblock {\em ACM SIGSOFT Software Engineering Notes 29}, 4 (2004), 97--107.
+
+\end{thebibliography}

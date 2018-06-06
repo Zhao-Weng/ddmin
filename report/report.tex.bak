@@ -1,0 +1,180 @@
+\documentclass[12pt]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage[colorinlistoftodos]{todonotes}
+\usepackage[margin=1in]{geometry}
+
+\title{CS239: Review and Comparison}
+
+\author{Zhaowei Tan\\504777867}
+
+\date{\today}
+
+\begin{document}
+	
+\maketitle
+
+\begin{abstract}
+This report reviews and compares three famous papers under the area of test generation~\cite{visser2004test, claessen2011quickcheck, pacheco2007feedback}. We first review what are the techniques developed by the papers, and then compare them for a broader discussion in this area.
+\end{abstract}
+
+\section{Introduction}
+\label{sec:introduction}
+Manually generating sufficient tests cases is often a time-consuming and painful procedure. Therefore, automatic test input generation, as a remedy to this situation, has been an active research area among the past few decades. Much literature is produced focusing on different approaches and solutions for better code coverage and other properties.
+
+In this report, we discuss three significant papers in this domain. We first start with Quickcheck~\cite{claessen2011quickcheck}, which describes a random test generation of Haskell programs ($\S$\ref{sec:review:quickcheck}). We then move on to Java Pathfinder~\cite{visser2004test}, which incorporates symbolic execution and model checking ideas for test inputs generation ($\S$\ref{sec:review:pathfinder}). Last but not least, we describe Randoop~\cite{pacheco2007feedback}, a test generator based on the feedback ($\S$\ref{sec:review:randoop}).
+
+Next, we briefly compare the differences among the papers described above in $\S$\ref{sec:compare}. We describe the differences among those approaches, and the pros and cons for each of those.
+
+\section{Review of Three Papers}
+\label{sec:review}
+
+\subsection{QuickCheck}
+\label{sec:review:quickcheck}
+
+\textbf{Motivation.}
+The authors intent to provide a tool which is able to help the Haskell programmers debug the program. As long as the programmer specifies the properties that the functions should satisfy, the tool will generate test data either automatically or follow user-defined generator. The authors continue to discuss QuickCheck: how this tool enables the property definition by the user, and how it generates the random test cases. After defining the property and generator, QuickCheck could generate random inputs and test whether the property holds.
+
+An important feature for this tool is \textit{lightweight}, which results in the fact that QuickCheck will need some user input to generate the inputs and perform testing.
+
+\noindent
+\textbf{Technique.} For defining a property, the authors design a domain-specific language of testable specifications for programmers to specify expected properties. More specifically, this language supports:
+\begin{itemize}
+\item Simple properties with variables.
+
+For this category, QuickCheck simply represents the property as a Haskell function. Intuitively, if the function returns True for every single test case, this property holds. The paper makes an example that
+\begin{center}
+	prop\_RevApp xs ys = reverse(xs ++ ys) == reverse ys++reverse xs
+\end{center}
+
+One thing to mention is that due to the overloading, the user has to specify what exactly the type is. Following the same example
+\begin{center}
+	prop\_RevApp :: [Int] $\rightarrow$ [Int] $\rightarrow$ Bool
+\end{center}
+\item Properties with quantify over functions.
+
+To formulate this type of property, the authors define an extensional equality (===) as (f === g) x = fx == gx. Therefore, as an example, to test whether the association property holds, we could write as
+\begin{center}
+	prop\_CompAssoc f g h = f . (g . h) === (f . g) . h \\
+	(also need a type signature for specification)
+\end{center}
+
+
+\item Laws hold conditionally.
+We also want to test whether some properties hold under certain conditions in QuickCheck. To represent this, QuickCheck provides an implication combinator to represent this, for example
+\begin{center}
+prop\_MaxLe :: Int $\rightarrow$ Int $\rightarrow$ Property\\
+prop\_MaxLe x y = x $\leq$ y $\rightarrow$ max x y == y
+\end{center}
+By testing a few cases that satisfy the condition (in this case, x $\leq$ y), we get the result of this property.
+\item Monitoring the test data.
+QuickCheck is also able to generate the statistics of the test data generated.
+
+\item Infinite structure.
+QuickCheck could as well deal with the infinite structures. This is used to handle some properties such as cycle xs == cycle (xs ++ xs). QuickCheck rewrites this as take n (cycle xs) == take n (cycle (xs ++ xs)) to avoid the infinite structure.
+\end{itemize}
+
+
+For defining generator, QuickCheck adopts random testing under a test data generation language defined by user. Concretely speaking, this language supports:
+\begin{itemize}
+\item Arbitrary type class.
+
+The QuickCheck introduces a type class called Arbitrary. A type is an instance of it if we want to generate arbitrary element of this type. Inside this class we have an abstract type Gen a, which is a generator either built in or specified by user. A simple example generator for integers is
+\begin{center}
+	instance Arbitrary Int where\\
+	arbitrary = choose (-20, 20)
+\end{center}
+Here choose (-20, 20) means choose a random integer between -20 and 20.
+
+\item Generating user-defined type.
+
+Generating user-defined types rely on the user input to keep the tool lightweight. The programmer is able to utilize the gadgets of QuickCheck to construct the generator. One simple example is
+\begin{center}
+	oneof [return Red, return Blue, return Green]
+\end{center}
+
+To generate an arbitrary list, we could use liftM and frequency keywords to realize this. For even finer control, QuickCheck allows the programmer to define the function that limits the size of the test input, so that avoid infinite loop without terminating.
+
+
+\item Generating functions.
+
+Some properties involve function as well. This QuickCheck is able to generate arbitrary functions as well. This is realized by transforming a function to a generator which generates data type depending on the argument value. For this purpose, we define a class called Coarbitrary, which generates arbitrary from its first argument. To define a concrete instance, we need a function called variant, which can constructs a generator based on the random number seed past to it. We use this function to construct instances of coarbitrary.
+
+\end{itemize}
+
+
+\noindent
+\textbf{Case Study.}
+The paper introduces several case studies. Here we demonstrate one of them to show the usage of QuickCheck. Lava~\cite{bjesse1998lava} is a tool to describe, simulate and formally verify hardware. It could be used to describe the hardware circuits as a function from input signals to output signals. Using QuickCheck, not only the programmers are able to check the property of Lava that is also verifiable inside Lava, we can also check some properties that are very complex to verify inside the Lava. This extends the scale of testing for Lava. Indeed, the authors found some errors inside this tool.
+
+
+
+
+
+
+\subsection{Java PathFinder}
+\label{sec:review:pathfinder}
+
+\textbf{Motivation.} This paper tries to utilize model checking and symbolic execution to generate test inputs. The author starts with introducing their previous work: Java PathFinder (JPF) model checker and its extension~\cite{khurshid2003generalized}. After that, we use Red-Black tree as example to see how we could program properties for a red-black tree. Three different methods for generating test inputs are introduced. The goal of using model checking and symbolic execution is to increase the \textit{code coverage} especially for complex data structures.
+\\
+
+\noindent
+\textbf{Technique.}
+As the background, the paper introduces the following techniques/knowledge
+\begin{itemize}
+\item Symbolic execution and framework in Java PathFinder.
+
+Symbolic execution uses symbolic values as input instead of real data. It outputs an execution tree. It updates path condition (PC) at each branch of the tree (e.g. PC is x$\leq$y at this node). If one input condition can never be satisfied (e.g. PC is x>y and x<y at this node), the symbolic execution will not continue for this path.
+
+In the authors' framework, the normal program is first translated to a special form which includes nondeterminism and path condition support. I was not sure what exactly they are talking about until I see the example in $\S$2.2.4: the paper illustrates how the code is transformed and how the symbolic execution tree is generated based on an example of node implementation.
+
+
+
+\item Red-black tree and its properties.
+
+The paper introduces four properties of a red-black tree. They are all expressible in Java language. The paper selects the property that ``If a node is red, then both its children are black'' as an illustration. By coding this property into the ``repOk'' function, we prepare ourselves for the test input generation.
+\end{itemize}
+
+The paper then moves on and talks about three types of test input generation.
+\begin{itemize}
+\item Model checking as testing.
+
+
+\item Black-box testing.
+
+
+\item White-box testing.
+\end{itemize}
+
+
+\textbf{Evaluation.}
+
+
+\subsection{Randoop}
+\label{sec:review:randoop}
+
+\textbf{Motivation.}
+
+
+\textbf{Technique.}
+
+\textbf{Implementation.}
+
+\textbf{Evaluation.}
+
+
+
+
+
+\section{Comparison and Discussion}
+\label{sec:compare}
+
+
+\newpage
+
+\bibliographystyle{acm}
+\bibliography{239}
+
+\end{document}
