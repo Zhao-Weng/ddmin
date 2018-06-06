@@ -162,6 +162,11 @@ def executeTest(code):
         print("Import Err Detected. Ignored")
         #print(e6)
         return Result.Unresolved
+    except ZeroDivisionError as e0:
+        if e is not e0:
+            return Result.Unresolved
+        else:
+            pass
     print("Pass")
     return Result.Pass
 
