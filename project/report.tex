@@ -1,0 +1,100 @@
+\documentclass[12pt]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage[colorinlistoftodos]{todonotes}
+\usepackage[margin=1in]{geometry}
+
+\usepackage{xspace}
+\def\name{\textit{ddmin}\xspace}
+
+
+\title{CS239: Delta-Debugging Project}
+
+\author{Xinyu Wang, Zhao Weng, Zhaowei Tan}
+
+\date{\today}
+
+\begin{document}
+	
+\maketitle
+
+\begin{abstract}
+This report reviews our project of building \name debugger in Python programming language. We describe the overview of our debugger, including the optimization we implement, and then use a few show cases to demonstrate the usage of our tool.
+\end{abstract}
+
+\section{Introduction to \name}
+\label{sec:introduction}
+\name~\cite{zeller2002simplifying} minimizes the test case which reflects the same error as the original test case does. 
+Input of \name is a function, data to be tested, and granularity. Granularity is used to indicate 
+number of subsets to divide. The program of \name has a while loop to keep processing of function. 
+
+First, the program will divide the data into subsets whose length is specified by granularity.
+If one of the subset throws the same error as the original data, that means only that specific subset contain the error we are interested in. Data are assigned the value of 
+that subset and continue the next loop round. 
+
+If all subsets cannot throw the same error as the original data, the complement of each subset 
+will be extracted out to test whether it can cause the error or not. If the specific complement can cause the same error, granularity will be decremented by 1 and maintain the value if the value drops below 2. Granularity is decremented by 1 because we need to keep the subset size in the next round the same after one subset is left out. After decrementing granularity, data will be assigned with value of the complement and continue the next loop round.
+
+If all complements cannot cause the same error either, granularity will be first checked against length of the data. If granularity is the same as length of data, that means data cannot be split into smaller pieces and one of those pieces can result in the same error. No single unit of data can be left out to cause the error we are interested. In that case, data at current round will be returned. Otherwise, granularity will be doubled so that the data can be cut into even smaller and more pieces to try for errors. To avoid the case the number of pieces surpass the length of the data, granularity will be upper bound by the length of data.
+
+\section{Implementation and Optimization regarding \name in Python}
+\textbf{Implementation} We write xxx code in Python, what's the overall architecture . [Describe the workflow here] The program first checks and pinpoint the error by running the program and then run xx and then xxx to minimize.
+
+
+\textbf{Granularity improvement.} We found that \name is actually not optimal because granularity is doubled if both all subsets and complements cannot generate the same error as the original. \name can work optimally only if the size of the original problem is  2’s power. Some divisions not of one over 2’s power size won’t be checked. We tuned \name so that granularity is incremented by 1 as well as multiplied by 1.5, and found that \name works better if granularity is incremented by 1 although it is still not optimal. But in that case, \name can cover more divisions of the original program and has better capability to minimize the original test case. 
+
+\textbf{Infinity loop.} Describe the problem and the solution
+
+
+\section{Evaluation}
+\textbf{findSubset description.}
+Given the number of pieces to cut into and the original set, findSubset will output an array of subset with the size of each subset equal to the lower bound of length of the original set divided by number of pieces. 
+
+\noindent
+\textbf{findComplement description.}
+Given the number of pieces to cut into, array of subsets, and specific index of the subsets array which should be skipped, findComplement will output the complement subset with the specified subset left out from the original subsets.
+
+\noindent
+\textbf{Testcase.}
+Supported Exception Type:
+StopIteration, OverflowError, FloatingPointError, ZeroDivisionError, AssertionError, IndexError, KeyError, UnboundLocalError, notImplementedError
+
+\noindent
+\textbf{Unsupported Exception Type.}
+SyntaxError, NameError, TypeError, ModuleNotFoundError, ImportError. We choose not to support these exception types because these exception type will happen when ddmin try to divide the program. It is hard to distinguish between the cases in which the original program has the specific error and the error is actually caused by ddmin while dividing the program. 
+
+\noindent
+\textbf{Test case Example Input.} 
+\begin{itemize}
+	\item DivideZeroError: bubble sort with zero division
+	\item AssertionError: Sum of 1, 1/2, 1/3 … to 1/10 with assertion. 
+	\item OverflowError: Sum of 1, 1/2, 1/3 … to 1/10 with overflow.
+	\item IndexError: Sum of 1, 1/2, 1/3 … to 1/10 with index violation. 
+\end{itemize}
+
+
+\noindent
+\textbf{Type perspective.}
+1. Input data is array of primitive types, we want to make sure \name can find out the smallest subset that causes the same error as the original input array
+2. Input data is a python program without calling other functions. Input python program can cause different types of exceptions. For each specific exception, our ddmin algorithm can first catch the type of that exception and find the minimized piece of the program which will throw that specific exception.
+
+3. Input data is python program with several layers of calling stack. Exception is involved in a specific layer of function call. Our \name program should catch the type of the exception and find the minimized piece of the program which will throw that specific exception.
+
+\noindent
+\textbf{Size perspective.}
+1. Our \name program is able to find minimized test case that causes the same error as the original program when the program size is relatively small (within 30 lines of code)
+
+2. Our \name program is able to find minimized test case that causes the same error as the original program when the program includes complex logic and class inheritance. 
+
+
+3. Our \name program is able to find minimized test case even when the script being input for testing calls a external library in the code. 
+
+
+
+
+\bibliographystyle{acm}
+\bibliography{239}
+
+\end{document}
