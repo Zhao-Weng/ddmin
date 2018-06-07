@@ -14,14 +14,15 @@ class BreakoutException(Exception):
 		self.message = message
 
 
+###########################################
+# array input minimization
+
 def Minimize(data, f):
 	if (f([]) == Result.Fail):
 		return []
 	if (f(data) == Result.Pass):
 		raise ValueError('ddmin: function must fail on data')
 	return ddmin(data, f, 2)
-
-
 
 
 def ddmin(data, f, granularity):
@@ -56,12 +57,7 @@ def ddmin(data, f, granularity):
 			pass
 	return data
 
-'''
-Given the number of pieces to cut into and the origianl set, 
-MakeSubsets will output an array of subset with each subset's size equal to 
-lowerbound of length of the orignal set divided by number of pieces. 
 
-'''
 def makeSubsets(s, n):
 	ret = []
 	while(n > 0):
@@ -105,6 +101,12 @@ def ExampleMinimize():
 	print(m)
 
 
+
+
+
+
+#####################################################
+# python program testcase minimization
 
 def ddmin(data, granularity):
     while (len(data) >= 2):
@@ -159,38 +161,6 @@ def findComplement(subsets, n):
     return "".join(b)
 
 
-def startDdmin():
-
-
-	filename = sys.argv[1]
-	f = open(filename, "r")
-	code = ''.join(f.readlines())
-	print(findMin(code))
-
-
-def findMin(data):
-	if (executeTest('') == Result.Fail):
-		print("trivial failure")
-		return []
-	try:
-		# print(data)
-		exec(data)
-	except Exception as e:
-		ex = sys.exc_info()[0]
-		# pdb.set_trace()
-		if ((str(ex) == "<class '__main__.InfiniteLoopException'>") or
-			(ex is StopIteration) or (ex is OverflowError) or (ex is FloatingPointError) or (ex is ZeroDivisionError) or
-			(ex is AssertionError) or (ex is AttributeError) or (ex is IndexError) or (ex is KeyError) or (ex is UnboundLocalError) or
-			or (ex is NotImplementedError))
-			
-			setGlobal(ex)
-			return ddmin(data, 2)
-		else:
-			raise Exception('unsupported error')
-	raise Exception('function must fail')
-    
-
-
 def executeTest(code):
     # arguments = "t.py".encode('utf-8')
     # filename = "handleInput.py"
@@ -232,6 +202,36 @@ def executeTest(code):
 			return Result.Unresolved
 		print("Pass")
 	return Result.Pass
+
+	
+def findMin(data):
+	if (executeTest('') == Result.Fail):
+		print("trivial failure")
+		return []
+	try:
+		# print(data)
+		exec(data)
+	except Exception as e:
+		ex = sys.exc_info()[0]
+		# pdb.set_trace()
+		if ((str(ex) == "<class '__main__.InfiniteLoopException'>") or
+			(ex is StopIteration) or (ex is OverflowError) or (ex is FloatingPointError) or (ex is ZeroDivisionError) or
+			(ex is AssertionError) or (ex is AttributeError) or (ex is IndexError) or (ex is KeyError) or (ex is UnboundLocalError) or
+			or (ex is NotImplementedError))
+			
+			setGlobal(ex)
+			return ddmin(data, 2)
+		else:
+			raise Exception('unsupported error')
+	raise Exception('function must fail')
+
+
+def startDdmin():
+	filename = sys.argv[1]
+	f = open(filename, "r")
+	code = ''.join(f.readlines())
+	print(findMin(code))
+
 
 def setGlobal(ex):
     global e, stre
