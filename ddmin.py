@@ -1,5 +1,7 @@
 import sys
 import re
+import pdb
+from testcase.infiniteLoop import InfiniteLoopException
 
 
 class Result:
@@ -105,24 +107,6 @@ def ExampleMinimize():
 
 
 
-def findMin(data):
-    if (executeTest('') == Result.Fail):
-        print("Here")
-        return []
-    try:
-        exec(data)
-    except:
-        ex = sys.exc_info()[0]
-        #eturn ddmin(data, 2, e)
-        if (ex is StopIteration) or (ex is OverflowError) or (ex is FloatingPointError) or (ex is ZeroDivisionError) or 
-           (ex is AssertionError) or (ex is AttributeError) or (ex is IndexError) or (ex is KeyError) or (ex is UnboundLocalError):
-            setGlobal(ex)
-            return ddmin(data, 2)
-        else:
-            raise ValueError('Unsupported Err.')
-    raise ValueError('function must fail')
-
-
 def ddmin(data, granularity):
     while (len(data) >= 2):
         try:
@@ -175,27 +159,36 @@ def findComplement(subsets, n):
     # print('b is:{0}\n'.format(b))
     return "".join(b)
 
+
 def startDdmin():
-    code = "".join(handleInput())
-
-    m = findMin(code)
-    print(m)
-
-def handleInput():
     filename = sys.argv[1]
-    if filename is not None:
-        c = 1
-        f = open(filename, "r")
-        char = f.read(1)
-        sub = []
-        while char:
-            sub.append(char)
-            char = f.read(1)
-            c += 1
-        #print(sub)
-        #print(c)
-        f.close()
-    return sub
+    f = open(filename, "r")
+    code = ''.join(f.readlines())
+    print(findMin(code))
+
+
+def findMin(data):
+	if (executeTest('') == Result.Fail):
+		print("trivial failure")
+		return []
+	try:
+		# print(data)
+		exec(data)
+	except:
+		ex = sys.exc_info()[0]
+		pdb.set_trace()
+     	# print(ex)
+		if ((ex is StopIteration) or (ex is OverflowError) or (ex is FloatingPointError) or (ex is ZeroDivisionError) or
+			(ex is AssertionError) or (ex is AttributeError) or (ex is IndexError) or (ex is KeyError) or (ex is UnboundLocalError) or
+			(ex is InfiniteLoopException) or (ex is NotImplementedError)):
+			print('he')
+			setGlobal(ex)
+			return ddmin(data, 2)
+		else:
+			raise Exception('unsupported error')
+	raise Exception('function must fail')
+    
+
 
 def executeTest(code):
     # arguments = "t.py".encode('utf-8')
