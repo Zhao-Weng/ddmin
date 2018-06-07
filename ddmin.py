@@ -178,11 +178,10 @@ def findMin(data):
 	except Exception as e:
 		ex = sys.exc_info()[0]
 		# pdb.set_trace()
-		# 
-		if (str(ex) == "<class '__main__.InfiniteLoopException'>"):
-			# (ex is StopIteration) or (ex is OverflowError) or (ex is FloatingPointError) or (ex is ZeroDivisionError) or
-			# (ex is AssertionError) or (ex is AttributeError) or (ex is IndexError) or (ex is KeyError) or (ex is UnboundLocalError) or
-			# or (ex is NotImplementedError)
+		if ((str(ex) == "<class '__main__.InfiniteLoopException'>") or
+			(ex is StopIteration) or (ex is OverflowError) or (ex is FloatingPointError) or (ex is ZeroDivisionError) or
+			(ex is AssertionError) or (ex is AttributeError) or (ex is IndexError) or (ex is KeyError) or (ex is UnboundLocalError) or
+			or (ex is NotImplementedError))
 			
 			setGlobal(ex)
 			return ddmin(data, 2)
@@ -198,10 +197,7 @@ def executeTest(code):
     # result = subprocess.run(["python", filename, "t.py"], stderr=subprocess.PIPE)
     # print(result.stdout.decode('utf-8'))
 	try:
-		#print(code)
-
 		exec(code)
-
 	except Exception:
 		ex = sys.exc_info()[0]
 		if (str(ex) == stre):
@@ -213,7 +209,6 @@ def executeTest(code):
 
 		except SyntaxError as e1:
 			print("Syntax Err Detected. Ignored")
-			#print(e1)
 			return Result.Unresolved
 
 		except e as e2:
