@@ -3,8 +3,7 @@ import time
 
 
 class InfiniteLoopException(Exception):
-	def __init__(self, message):
-		self.message = message
+	pass
 
 if __name__ == '__main__':
 	start = time.time()
@@ -18,5 +17,5 @@ if __name__ == '__main__':
 		end = time.time()
 		if (end - start > 5):
 			#raise InfiniteLoopException("infinite Loop")
-			raise InfiniteLoopException('infinite loop')
+			raise InfiniteLoopException()
 

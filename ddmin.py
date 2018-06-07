@@ -3,7 +3,6 @@ import re
 import pdb
 from testcase.infiniteLoop import InfiniteLoopException
 
-
 class Result:
     Pass = 1
     Fail = 2
@@ -161,10 +160,12 @@ def findComplement(subsets, n):
 
 
 def startDdmin():
-    filename = sys.argv[1]
-    f = open(filename, "r")
-    code = ''.join(f.readlines())
-    print(findMin(code))
+
+
+	filename = sys.argv[1]
+	f = open(filename, "r")
+	code = ''.join(f.readlines())
+	print(findMin(code))
 
 
 def findMin(data):
@@ -174,14 +175,15 @@ def findMin(data):
 	try:
 		# print(data)
 		exec(data)
-	except:
+	except Exception as e:
 		ex = sys.exc_info()[0]
-		pdb.set_trace()
-     	# print(ex)
-		if ((ex is StopIteration) or (ex is OverflowError) or (ex is FloatingPointError) or (ex is ZeroDivisionError) or
-			(ex is AssertionError) or (ex is AttributeError) or (ex is IndexError) or (ex is KeyError) or (ex is UnboundLocalError) or
-			(ex is InfiniteLoopException) or (ex is NotImplementedError)):
-			print('he')
+		# pdb.set_trace()
+		# 
+		if (str(ex) == "<class '__main__.InfiniteLoopException'>"):
+			# (ex is StopIteration) or (ex is OverflowError) or (ex is FloatingPointError) or (ex is ZeroDivisionError) or
+			# (ex is AssertionError) or (ex is AttributeError) or (ex is IndexError) or (ex is KeyError) or (ex is UnboundLocalError) or
+			# or (ex is NotImplementedError)
+			
 			setGlobal(ex)
 			return ddmin(data, 2)
 		else:
@@ -195,42 +197,56 @@ def executeTest(code):
     # filename = "handleInput.py"
     # result = subprocess.run(["python", filename, "t.py"], stderr=subprocess.PIPE)
     # print(result.stdout.decode('utf-8'))
-    try:
-        #print(code)
-        exec(code)
-    except SyntaxError as e1:
-        print("Syntax Err Detected. Ignored")
-        #print(e1)
-        return Result.Unresolved
-    except e as e2:
-        print("Designated Err Detected. Catch")
-        return Result.Fail
-    except NameError as e3:
-        print("Name Err Detected. Ignored")
-        # print(e3)
-        return Result.Unresolved
-    except ModuleNotFoundError as e4:
-        print("ModuleNotFound Err Detected. Ignored")
-        # print(e4)
-        return Result.Unresolved
-    except TypeError as e5:
-        print("Type Err Detected. Ignored")
-        #print(e5)
-        return Result.Unresolved
-    except ImportError as e6:
-        print("Import Err Detected. Ignored")
-        #print(e6)
-        return Result.Unresolved
-    print("Pass")
-    return Result.Pass
+	try:
+		#print(code)
+
+		exec(code)
+
+	except Exception:
+		ex = sys.exc_info()[0]
+		if (str(ex) == stre):
+			print("Designated Err Detected. Catch")
+			return Result.Fail
+		try:
+			exec(code)
+
+
+		except SyntaxError as e1:
+			print("Syntax Err Detected. Ignored")
+			#print(e1)
+			return Result.Unresolved
+
+		except e as e2:
+			print("Designated Err Detected. Catch")
+			return Result.Fail
+		except NameError as e3:
+			print("Name Err Detected. Ignored")
+			# print(e3)
+			return Result.Unresolved
+		except ModuleNotFoundError as e4:
+			print("ModuleNotFound Err Detected. Ignored")
+			# print(e4)
+			return Result.Unresolved
+		except TypeError as e5:
+			print("Type Err Detected. Ignored")
+			#print(e5)
+			return Result.Unresolved
+		except ImportError as e6:
+			print("Import Err Detected. Ignored")
+			#print(e6)
+			return Result.Unresolved
+		print("Pass")
+	return Result.Pass
 
 def setGlobal(ex):
-    global e
+    global e, stre
     e = ex
+    stre = str(e)
     print("Catching "+ str(ex))
 
+
 if __name__ == '__main__':
-    startDdmin()
+	startDdmin()
 
 
 
