@@ -13,6 +13,7 @@ def bubble_sort(collection):
 
 
 if __name__ == '__main__':
+    a = 1
     #try:
         #raw_input          # Python 2
     #except NameError:
@@ -21,6 +22,5 @@ if __name__ == '__main__':
     #user_input = raw_input('Enter numbers separated by a comma:\n').strip()
     user_input = "1,3,2,5,4"
     unsorted = [int(item) for item in user_input.split(',')]
-    a = 1
     a = a / 0
     #print(bubble_sort(unsorted))

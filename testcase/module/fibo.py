@@ -1,13 +1,9 @@
 def fib(n):    # write Fibonacci series up to n
-    a, b = 0, 1
-    while b < n:
-        print b,
-        a, b = b, a+b
+    n = 10
+    sum1 = 0
+    for i in range(1, n + 1):
+        sum1 = sum1 + (1 / i)
+    assert (i == 11), "gg"
+    print("The sum of series is", round(sum1, 2))
 
-def fib2(n):   # return Fibonacci series up to n
-    result = []
-    a, b = 0, 1
-    while b < n:
-        result.append(b)
-        a, b = b, a+b
-    return result
+

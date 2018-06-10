@@ -6,6 +6,8 @@ import os
 from testcase.infiniteLoop import InfiniteLoopException
 
 
+c = 0
+
 class Result:
     Pass = 1
     Fail = 2
@@ -110,11 +112,13 @@ def ExampleMinimize():
 
 
 def ddmin(data, granularity):
+    global c
     while (len(data) >= 2):
         try:
             subsets = findSubsets(data, granularity)
             for subset in subsets:
                 print("Testing Subsets")
+                c = c + 1
                 print(subset)
                 if (executeTest(subset) == Result.Fail):
                     data = subset
@@ -123,6 +127,7 @@ def ddmin(data, granularity):
             for i in range(len(subsets)):
                 complement = findComplement(subsets, i)
                 print("Testing Complement")
+                c = c + 1
                 print(complement)
                 if (executeTest(complement) == Result.Fail):
                     granularity -= 1
@@ -180,18 +185,25 @@ def startDdmin_r(args):
 
     for line in f_file:
         keywords = line.split(" ")
-        if keywords[0] == "import":
+        if "fibo." in line:
+            f_tmp.write("print (fib(100))")
+            continue
+        if keywords[0] == "import" and keywords[1] == "fibo\n":
+
             # read the code, whether there is import, copy into new file
             library_path = file_path_pre + "/" + keywords[1][0:-1] + ".py"
             f_tmp.write(open(library_path, "r").read())
         else:
             f_tmp.write(line)
 
+
+
     f_tmp.close()
 
     with open('tmp.py', 'r') as myfile:
         code = myfile.read()
-        # print code
+        # print (code)
+
 
     os.remove("tmp.py")
     m = findMin(code)
@@ -290,6 +302,7 @@ if __name__ == '__main__':
         startDdmin()
         end = time.time()
     print("Time elapsed: "+str(end-start))
+    print("Number of Tests: " + str(c))
 
 
 
