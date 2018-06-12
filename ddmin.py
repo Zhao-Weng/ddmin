@@ -182,16 +182,24 @@ def startDdmin_r(args):
 
     file_path_array = file_path.split("/")
     file_path_pre = "/".join(file_path_array[0:-1])
+    
+    customized_module_imported = []
 
     for line in f_file:
         keywords = line.split(" ")
-        if "fibo." in line:
-            f_tmp.write("print (fib(100))")
-            continue
-        if keywords[0] == "import" and keywords[1] == "fibo\n":
+        is_module = False
+        for module_imported in customized_module_imported:
+          if line.find(module_imported + ".") > 0:
+              f_tmp.write(line.replace(module_imported + ".", ""))
+              is_module = True
+              break
+        if is_module:
+          continue
 
-            # read the code, whether there is import, copy into new file
+        if keywords[0] == "import" and os.path.isfile(file_path_pre + "/" + keywords[1][0:-1] + ".py"):
+            # read the code, whether there is import of local module, copy into new file
             library_path = file_path_pre + "/" + keywords[1][0:-1] + ".py"
+            customized_module_imported.append(keywords[1][0:-1])
             f_tmp.write(open(library_path, "r").read())
         else:
             f_tmp.write(line)
@@ -203,11 +211,14 @@ def startDdmin_r(args):
     with open('tmp.py', 'r') as myfile:
         code = myfile.read()
         # print (code)
+        # print (customized_module_imported)
+        # return
 
 
     os.remove("tmp.py")
     m = findMin(code)
     print(m)
+
 
 
 def findMin(data):
