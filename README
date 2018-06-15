@@ -6,7 +6,7 @@ It can be used to identify minimal testcases for fundamental data structure such
 python program that throws specific errors or exceptions
 The exceptions that can be handled are detailedly specified in the report
 run `python ddmin.py [filename]` to minimize testcases with one function stack
-run `python ddmin.py -r [filename]` to minimize testcases with more than one function call stack and module import
+run `python ddmin.py -r [filename]` to minimize testcases with module import (currently only support local modules)
 
 
 
