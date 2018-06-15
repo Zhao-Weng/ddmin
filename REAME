@@ -1,0 +1,12 @@
+Usage:
+
+ddmin.py script minimizes testcases that generates the same exceptions or errors as the origninal 
+testcase does
+It can be used to identify minimal testcases for fundamental data structure such as array as well as
+python program that throws specific errors or exceptions
+The exceptions that can be handled are detailedly specified in the report
+run `python ddmin.py [filename]` to minimize testcases with one function stack
+run `python ddmin.py -r [filename]` to minimize testcases with more than one function call stack and module import
+
+
+

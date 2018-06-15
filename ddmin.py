@@ -1,6 +1,10 @@
 import sys
 import re
 import pdb
+import time
+import os
+from argparse import ArgumentParser
+from optparse import OptionParser
 from testcase.infiniteLoop import InfiniteLoopException
 
 class Result:
@@ -48,12 +52,10 @@ def ddmin(data, f, granularity):
 					raise BreakoutException('continue while loop')
 			if (granularity == len(data)):
 				return data
-			granularity *= 2
+			granularity *= 2     # can try different values to divide into different pieces
 			if (granularity > len(data)):
 				granularity = len(data)
-			# print('granunarity: {0}\n'.format(granularity))
 		except BreakoutException:
-			# print('granunarity: {0}\n'.format(granularity))
 			pass
 	return data
 
@@ -99,9 +101,6 @@ def ExampleMinimize():
 	data = [1, 2, 3, 4, 5, 6, 7, 8]
 	m = Minimize(data, f)
 	print(m)
-
-
-
 
 
 
@@ -157,7 +156,6 @@ def findComplement(subsets, n):
         if (i == n):
             continue
         b.append(s)
-    # print('b is:{0}\n'.format(b))
     return "".join(b)
 
 
@@ -217,7 +215,7 @@ def findMin(data):
 		if ((str(ex) == "<class '__main__.InfiniteLoopException'>") or
 			(ex is StopIteration) or (ex is OverflowError) or (ex is FloatingPointError) or (ex is ZeroDivisionError) or
 			(ex is AssertionError) or (ex is AttributeError) or (ex is IndexError) or (ex is KeyError) or (ex is UnboundLocalError) or
-			or (ex is NotImplementedError))
+			 (ex is NotImplementedError)):
 			
 			setGlobal(ex)
 			return ddmin(data, 2)
@@ -233,6 +231,43 @@ def startDdmin():
 	print(findMin(code))
 
 
+def startDdmin_r(args):
+    file_path = args[0]
+    # create a new file
+    f_tmp = open("tmp.py", "w")
+    f_file = open(file_path, "r")
+
+    file_path_array = file_path.split("/")
+    file_path_pre = "/".join(file_path_array[0:-1])
+    
+    customized_module_imported = []
+
+    for line in f_file:
+        keywords = line.split(" ")
+        is_module = False
+        for module_imported in customized_module_imported:
+          if line.find(module_imported + ".") > 0:
+              f_tmp.write(line.replace(module_imported + ".", ""))
+              is_module = True
+              break
+        if is_module:
+          continue
+
+        if keywords[0] == "import" and os.path.isfile(file_path_pre + "/" + keywords[1][0:-1] + ".py"):
+            # read the code, whether there is import of local module, copy into new file
+            library_path = file_path_pre + "/" + keywords[1][0:-1] + ".py"
+            customized_module_imported.append(keywords[1][0:-1])
+            f_tmp.write(open(library_path, "r").read())
+        else:
+            f_tmp.write(line)
+    f_tmp.close()
+    with open('tmp.py', 'r') as myfile:
+        code = myfile.read()
+    os.remove("tmp.py")
+    m = findMin(code)
+    print(m)
+
+
 def setGlobal(ex):
     global e, stre
     e = ex
@@ -241,7 +276,20 @@ def setGlobal(ex):
 
 
 if __name__ == '__main__':
-	startDdmin()
+	parser = OptionParser()
+	parser.add_option("-r", action="store_true", dest="recursive")
+	(options, args) = parser.parse_args()
 
+    # print options
+	if args == []:
+		print ("Usage: python ddmin.py [-r] filepath")
+		exit()
+	start = time.time()
+	if options.recursive:
+		startDdmin_r(args)
+	else:
+		startDdmin()
+	end = time.time()
+	print("Time elapsed: "+str(end-start))
 
 
